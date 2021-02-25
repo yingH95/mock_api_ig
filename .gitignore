@@ -1,0 +1,4 @@
+*.idea*
+__pycache__/
+get_views.log
+view_counts.json
