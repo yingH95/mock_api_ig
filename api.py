@@ -4,6 +4,8 @@ import flask
 import json
 import pytz
 from flask import request
+from os import walk
+
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -18,7 +20,7 @@ def make_file(data, dirpath):
     dt = datetime.datetime.now()
     timezone = pytz.timezone('Asia/Shanghai')
     d_aware = dt.astimezone(timezone)
-    filename = d_aware.strftime("%Y%m%d%H%M%S") + ".txt"
+    filename = d_aware.strftime("%Y%m%d_%H%M%S") + ".txt"
     filename = os.path.join(dirpath, filename)
     with open(filename, "w") as f:
         for key in data:
@@ -27,7 +29,33 @@ def make_file(data, dirpath):
 
 @app.route("/", methods=['GET'])
 def hello():
-    return "<div>Hello</div>"
+    ip_files = []
+    for (dirpath, dirnames, filenames) in walk(ip_dir):
+        ip_files.extend(filenames)
+        break
+    login_files = []
+    for (dirpath, dirnames, filenames) in walk(login_dir):
+        login_files.extend(filenames)
+        break
+    info_files = []
+    for (dirpath, dirnames, filenames) in walk(info_dir):
+        info_files.extend(filenames)
+        break
+
+    html = "<div>IP Files: <ul>"
+    for file in ip_files:
+        html += "<li>" + file + "</li>"
+    html += "</ul></div>"
+    html += "<div>Login Files: <ul>"
+    for file in login_files:
+        html += "<li>" + file + "</li>"
+    html += "</ul></div>"
+    html += "<div>Info Files: <ul>"
+    for file in info_files:
+        html += "<li>" + file + "</li>"
+    html += "</ul></div>"
+
+    return html
 
 
 @app.route('/ip', methods=['POST'])
