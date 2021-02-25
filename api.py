@@ -4,7 +4,6 @@ import flask
 import json
 import pytz
 from flask import request
-from pathlib import Path
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -13,9 +12,6 @@ dirname = os.path.dirname(__file__)
 login_dir = dirname + "/accounts"
 info_dir = dirname + "/info"
 ip_dir = dirname + "/ip"
-Path(ip_dir).mkdir(parents=True, exist_ok=True)
-Path(login_dir).mkdir(parents=True, exist_ok=True)
-Path(info_dir).mkdir(parents=True, exist_ok=True)
 
 
 def make_file(data, dirpath):
